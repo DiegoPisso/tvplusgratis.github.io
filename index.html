@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV PLUS | Deportes en Vivo</title>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --bg-dark: #050505;
+            --sidebar-bg: #0d0d0d;
+            --text-color: #ffffff;
+            --accent-gold: #d4af37;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Barra Lateral */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .brand-logo {
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-style: italic;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            color: var(--primary-color);
+            letter-spacing: -1px;
+        }
+
+        .category-label {
+            padding: 15px 20px 5px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .channel-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .channel-item:hover {
+            background: #1a1a1a;
+            border-left-color: var(--primary-color);
+        }
+
+        .channel-item.active {
+            background: #1a1a1a;
+            border-left-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Contenedor Principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Controles de Servidor */
+        .player-controls {
+            padding: 20px;
+            background: var(--sidebar-bg);
+            border-top: 1px solid #222;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .server-btn {
+            background: #222;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .server-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .server-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Sección Legal */
+        .legal-section {
+            padding: 20px;
+            font-size: 0.7rem;
+            color: #444;
+            line-height: 1.4;
+            overflow-y: auto;
+            background: #050505;
+        }
+
+        .badge-live {
+            background: #ff0000;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            font-weight: bold;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="brand-logo">TV PLUS</div>
+        
+        <div class="category-label">ESPN Network</div>
+        <div class="channel-item active" onclick="loadChannel('espn3', 'ESPN 3')">ESPN 3 <span class="badge-live">HD</span></div>
+        <div class="channel-item" onclick="loadChannel('espn4', 'ESPN 4')">ESPN 4</div>
+        <div class="channel-item" onclick="loadChannel('espn5', 'ESPN 5')">ESPN 5</div>
+        <div class="channel-item" onclick="loadChannel('espnmexico', 'ESPN México')">ESPN MX</div>
+        <div class="channel-item" onclick="loadChannel('espn2mexico', 'ESPN 2 México')">ESPN 2 MX</div>
+
+        <div class="category-label">Colombia y Región</div>
+        <div class="channel-item" onclick="loadChannel('winsports', 'Win Sports')">Win Sports</div>
+        <div class="channel-item" onclick="loadChannel('winsportsplus', 'Win Sports+')">Win Sports+</div>
+        <div class="channel-item" onclick="loadChannel('liga1max', 'Liga 1 Max')">Liga 1 Max</div>
+
+        <div class="category-label">Internacional</div>
+        <div class="channel-item" onclick="loadChannel('foxsportspremium', 'Fox Sports Premium')">Fox Sports Premium</div>
+        <div class="channel-item" onclick="loadChannel('daznf1', 'DAZN F1')">DAZN F1</div>
+        <div class="channel-item" onclick="loadChannel('daznlaliga', 'DAZN LaLiga')">DAZN LaLiga</div>
+        <div class="channel-item" onclick="loadChannel('aztecadeportes', 'Azteca Deportes')">Azteca Deportes</div>
+
+        <div class="category-label">DSports Family</div>
+        <div class="channel-item" onclick="loadChannel('directvsports', 'DSports')">DSports</div>
+        <div class="channel-item" onclick="loadChannel('directvsports2', 'DSports 2')">DSports 2</div>
+        <div class="channel-item" onclick="loadChannel('directvsportsplus', 'DSports+')">DSports+</div>
+    </div>
+
+    <div class="main-content">
+        <div class="video-wrapper">
+            <iframe id="player" 
+                    src="https://embed.ksdjugfsddeports.com/embed2/espn3.html" 
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture" 
+                    allowfullscreen="true" 
+                    scrolling="no" 
+                    frameborder="0"></iframe>
+        </div>
+
+        <div class="player-controls">
+            <span id="current-title" style="margin-right: 20px; font-weight: bold; color: var(--primary-color);">Cargando: ESPN 3</span>
+            <button class="server-btn active" id="btn-srv1" onclick="changeServer(1)">OPCIÓN 1 (HD)</button>
+            <button class="server-btn" id="btn-srv2" onclick="changeServer(2)">OPCIÓN 2 (SD)</button>
+        </div>
+
+        <div class="legal-section">
+            <strong>AVISO LEGAL Y COPYRIGHT:</strong><br>
+            Este sitio web (TV PLUS) funciona únicamente como un organizador de enlaces embebidos de terceros disponibles públicamente en la red. No producimos, almacenamos ni retransmitimos señales de video desde nuestra propia infraestructura. Todas las marcas, logotipos (ESPN, Win Sports, DSports, Fox Sports, DAZN, Azteca, Liga 1) y derechos de transmisión son propiedad intelectual de sus respectivos dueños. Al tratarse de contenido incrustado de proveedores ajenos, cualquier reclamo de copyright (DMCA) debe ser dirigido directamente a los servidores que originan la señal técnica. El uso de este portal es estrictamente informativo y gratuito.
+        </div>
+    </div>
+
+    <script>
+        let currentId = 'espn3';
+
+        function loadChannel(id, name) {
+            currentId = id;
+            document.getElementById('current-title').innerText = "Viendo: " + name;
+            
+            // Actualizar active en lista
+            document.querySelectorAll('.channel-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Resetear a Servidor 1 por defecto al cambiar de canal
+            changeServer(1);
+        }
+
+        function changeServer(num) {
+            const player = document.getElementById('player');
+            const btn1 = document.getElementById('btn-srv1');
+            const btn2 = document.getElementById('btn-srv2');
+
+            if(num === 1) {
+                player.src = `https://embed.ksdjugfsddeports.com/embed2/${currentId}.html`;
+                btn1.classList.add('active');
+                btn2.classList.remove('active');
+            } else {
+                player.src = `https://embed.ksdjugfsddeports.com/embed/${currentId}.html`;
+                btn1.classList.remove('active');
+                btn2.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
