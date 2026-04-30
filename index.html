@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV PLUS | Plataforma Pro</title>
+    <style>
+        :root {
+            --primary: #ff0000;
+            --bg: #050505;
+            --side: #0d0d0d;
+            --text: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background-color: var(--side);
+            border-right: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .logo {
+            padding: 25px;
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-align: center;
+            color: var(--primary);
+            border-bottom: 1px solid #222;
+            letter-spacing: -1px;
+        }
+
+        .channel-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .cat-title {
+            padding: 20px 20px 8px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #ff0000;
+            font-weight: 800;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .item {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #151515;
+        }
+
+        .item:hover { background: #1a1a1a; }
+        .item.active {
+            background: #1a1a1a;
+            border-left-color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Main Area */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-box {
+            flex: 1;
+            background: #000;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .controls {
+            padding: 15px 25px;
+            background: var(--side);
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-srv {
+            background: #222;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 8px 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-srv:hover { background: #333; }
+        .btn-srv.active { background: var(--primary); border-color: var(--primary); }
+
+        .footer-legal {
+            padding: 10px 25px;
+            font-size: 0.65rem;
+            color: #444;
+            background: #000;
+            text-align: center;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">TV PLUS</div>
+        <div class="channel-container">
+            
+            <div class="cat-title">Deportes Premium</div>
+            <div class="item active" onclick="load(this, 'tudn', 'TUDN')">TUDN <span>LIVE</span></div>
+            <div class="item" onclick="load(this, 'winsportsplus', 'Win Sports+')">Win Sports+</div>
+            <div class="item" onclick="load(this, 'winsports', 'Win Sports')">Win Sports</div>
+            <div class="item" onclick="load(this, 'espnpremium', 'ESPN Premium')">ESPN Premium</div>
+            <div class="item" onclick="load(this, 'espncol', 'ESPN Colombia')">ESPN Colombia</div>
+            <div class="item" onclick="load(this, 'espn2', 'ESPN 2')">ESPN 2</div>
+            <div class="item" onclick="load(this, 'espn3', 'ESPN 3')">ESPN 3</div>
+            <div class="item" onclick="load(this, 'espn4', 'ESPN 4')">ESPN 4</div>
+            <div class="item" onclick="load(this, 'espn5', 'ESPN 5')">ESPN 5</div>
+            <div class="item" onclick="load(this, 'espn6', 'ESPN 6')">ESPN 6</div>
+            <div class="item" onclick="load(this, 'espn7', 'ESPN 7')">ESPN 7</div>
+            <div class="item" onclick="load(this, 'directvsports', 'DSports')">DSports</div>
+            <div class="item" onclick="load(this, 'directvsports2', 'DSports 2')">DSports 2</div>
+            <div class="item" onclick="load(this, 'directvsportsplus', 'DSports+')">DSports+</div>
+            <div class="item" onclick="load(this, 'foxsportsmexico', 'Fox Sports Mex')">Fox Sports Mex</div>
+            <div class="item" onclick="load(this, 'foxsports2mexico', 'Fox Sports 2 Mex')">Fox Sports 2 Mex</div>
+            <div class="item" onclick="load(this, 'foxsportspremium', 'Fox Sports Premium')">Fox Sports Premium</div>
+            <div class="item" onclick="load(this, 'tntsports', 'TNT Sports')">TNT Sports</div>
+            <div class="item" onclick="load(this, 'tycsports', 'TyC Sports')">TyC Sports</div>
+            <div class="item" onclick="load(this, 'liga1', 'Liga 1')">Liga 1</div>
+            <div class="item" onclick="load(this, 'liga1max', 'Liga 1 Max')">Liga 1 Max</div>
+            <div class="item" onclick="load(this, 'daznf1', 'DAZN F1')">DAZN F1</div>
+            <div class="item" onclick="load(this, 'daznlaliga', 'DAZN LaLiga')">DAZN LaLiga</div>
+            <div class="item" onclick="load(this, 'movistarligadecampeones', 'Movistar Champions')">Movistar Champions</div>
+            <div class="item" onclick="load(this, 'movistarlaliga', 'Movistar LaLiga')">Movistar LaLiga</div>
+
+            <div class="cat-title">Canales Nacionales</div>
+            <div class="item" onclick="load(this, 'caracol', 'Caracol TV')">Caracol TV</div>
+            <div class="item" onclick="load(this, 'rcn', 'RCN')">RCN</div>
+            <div class="item" onclick="load(this, 'azteca7', 'Azteca 7')">Azteca 7</div>
+            <div class="item" onclick="load(this, 'canal5', 'Canal 5')">Canal 5</div>
+            <div class="item" onclick="load(this, 'latina', 'Latina')">Latina</div>
+            <div class="item" onclick="load(this, 'americatv', 'América TV')">América TV</div>
+            <div class="item" onclick="load(this, 'telefe', 'Telefe')">Telefe</div>
+            <div class="item" onclick="load(this, 'eltrece', 'El Trece')">El Trece</div>
+            <div class="item" onclick="load(this, 'telemundo51', 'Telemundo 51')">Telemundo 51</div>
+            <div class="item" onclick="load(this, 'univision', 'Univisión')">Univisión</div>
+            <div class="item" onclick="load(this, 'unicable', 'Unicable')">Unicable</div>
+            <div class="item" onclick="load(this, 'pasiones', 'Pasiones')">Pasiones</div>
+
+            <div class="cat-title">Cine y Series</div>
+            <div class="item" onclick="load(this, 'starchannel', 'Star Channel')">Star Channel</div>
+            <div class="item" onclick="load(this, 'warnerchannel', 'Warner TV')">Warner TV</div>
+            <div class="item" onclick="load(this, 'tnt', 'TNT')">TNT</div>
+            <div class="item" onclick="load(this, 'tntseries', 'TNT Series')">TNT Series</div>
+            <div class="item" onclick="load(this, 'space', 'Space')">Space</div>
+            <div class="item" onclick="load(this, 'fx', 'FX')">FX</div>
+            <div class="item" onclick="load(this, 'cinemax', 'Cinemax')">Cinemax</div>
+            <div class="item" onclick="load(this, 'cinecanal', 'Cinecanal')">Cinecanal</div>
+            <div class="item" onclick="load(this, 'sony', 'Sony TV')">Sony TV</div>
+            <div class="item" onclick="load(this, 'universalchannel', 'Universal TV')">Universal TV</div>
+            <div class="item" onclick="load(this, 'studiouniversal', 'Studio Universal')">Studio Universal</div>
+            <div class="item" onclick="load(this, 'distritocomedia', 'Distrito Comedia')">Distrito Comedia</div>
+            <div class="item" onclick="load(this, 'goldenplus', 'Golden Plus')">Golden Plus</div>
+            <div class="item" onclick="load(this, 'goldenedge', 'Golden Edge')">Golden Edge</div>
+            <div class="item" onclick="load(this, 'goldenpremier', 'Golden Premier')">Golden Premier</div>
+
+            <div class="cat-title">Documentales y Niños</div>
+            <div class="item" onclick="load(this, 'history', 'History')">History</div>
+            <div class="item" onclick="load(this, 'history2', 'History 2')">History 2</div>
+            <div class="item" onclick="load(this, 'natgeo', 'NatGeo')">NatGeo</div>
+            <div class="item" onclick="load(this, 'discoverychannel', 'Discovery')">Discovery</div>
+            <div class="item" onclick="load(this, 'animalplanet', 'Animal Planet')">Animal Planet</div>
+            <div class="item" onclick="load(this, 'disneychannel', 'Disney Channel')">Disney Channel</div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="player-box">
+            <iframe id="main-player" 
+                    src="https://embed.ksdjugfsddeports.com/embed2/tudn.html" 
+                    allow="autoplay; encrypted-media; fullscreen" 
+                    allowfullscreen 
+                    scrolling="no"></iframe>
+        </div>
+
+        <div class="controls">
+            <div id="viewing">Viendo: <b>TUDN</b></div>
+            <div>
+                <button id="s1" class="btn-srv active" onclick="srv(1)">SERVIDOR 1</button>
+                <button id="s2" class="btn-srv" onclick="srv(2)">SERVIDOR 2</button>
+            </div>
+        </div>
+
+        <div class="footer-legal">
+            © TV PLUS - Contenido de terceros. Esta web solo embebe señales disponibles en la red.
+        </div>
+    </div>
+
+    <script>
+        let cid = 'tudn';
+
+        function load(el, id, name) {
+            cid = id;
+            document.getElementById('viewing').innerHTML = "Viendo: <b>" + name + "</b>";
+            document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+            srv(1);
+        }
+
+        function srv(n) {
+            const p = document.getElementById('main-player');
+            const serverFolder = (n === 1) ? 'embed2' : 'embed';
+            p.src = `https://embed.ksdjugfsddeports.com/${serverFolder}/${cid}.html`;
+            
+            document.getElementById('s1').classList.toggle('active', n === 1);
+            document.getElementById('s2').classList.toggle('active', n === 2);
+        }
+    </script>
+</body>
+</html>
